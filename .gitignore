@@ -1,0 +1,42 @@
+# === Python Cache & Compiled Files ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Virtual Environments ===
+.env/
+.venv/
+venv/
+env/
+ENV/
+
+# === Environment Variables & Secrets (CRITICAL) ===
+.env
+*.env
+!*.env.example
+
+# === FastAPI / Starlette / Uvicorn Specifics ===
+# Ignore local databases if using SQLite locally
+*.db
+*.sqlite3
+
+# Log files
+*.log
+log.txt
+
+# === Testing & Code Coverage ===
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# === IDEs and Editors ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS Specific ===
+.DS_Store
+Thumbs.db
