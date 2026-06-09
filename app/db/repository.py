@@ -1,6 +1,7 @@
 from sqlalchemy import update
 from app.schemas import PurchaseRequest
 from app.session import session_factory
+from app.db import Product
 
 async def purchase(request: PurchaseRequest) -> bool:
     async with session_factory() as session:
