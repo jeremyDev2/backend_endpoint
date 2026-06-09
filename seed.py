@@ -8,6 +8,7 @@ async def seed():
     async with session_factory() as session:
         await session.execute(insert(Product).values(products))
         await session.commit()
+        print("Seed completed successfully!")
 
 if __name__ == "__main__":
     asyncio.run(seed())
