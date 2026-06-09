@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.14
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
@@ -9,4 +9,6 @@ RUN uv sync --frozen --no-dev
 
 COPY . .
 
-CMD ["uv", "run", "granian", "--interface", "asgi", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+CMD ["./entrypoint.sh"]
