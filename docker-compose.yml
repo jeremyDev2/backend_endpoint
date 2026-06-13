@@ -35,3 +35,14 @@ services:
     image: rabbitmq:3-management-alpine
     ports:
       - "5672:5672"
+      - "15672:15672"
+
+  worker:
+    build: .
+    env_file: .env
+    command: uv run celery -A app.worker.celery_app:celery_app worker --loglevel=info
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_healthy
