@@ -5,8 +5,8 @@ from app.settings import settings
 engine = create_async_engine(
 
     str(settings.pg_dns),
-    pool_size=90,
-    max_overflow=10,
+    pool_size=5,
+    max_overflow=5,
     pool_pre_ping=True,
     pool_timeout=5,
     pool_recycle=1800
@@ -20,7 +20,3 @@ session_factory = async_sessionmaker(
     expire_on_commit=False
 
 )
-
-async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    async with session_factory() as session:
-        yield session
