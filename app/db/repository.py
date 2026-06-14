@@ -1,17 +1,16 @@
-from sqlalchemy import update
+import asyncio
+from app.cache.redis_client import decrement_stock
 from app.schemas import PurchaseRequest
-from app.session import session_factory
-from app.db import Product
+from app.worker.task import sync_stock_to_db
 
-async def purchase(request: PurchaseRequest) -> bool:
-    async with session_factory() as session:
-        stmt = (update(Product)
-                .where(Product.product_id == request.product_id, Product.stock >= request.purchased_count)
-                .values(stock = Product.stock - request.purchased_count)
-                .returning(Product.stock)
-                )
+async def purchase_redis(request: PurchaseRequest) -> int:
 
-
-        result = await session.execute(stmt)
-        await session.commit()
-        return result.fetchone() is not None
+    res = await decrement_stock(
+        keys=[f"stock:{request.product_id}"], 
+        args=[request.purchased_count],
+    )
+    if res >= 0:
+        await asyncio.to_thread(
+            sync_stock_to_db.delay(request.product_id, request.purchased_count)
+        )
+    return res
