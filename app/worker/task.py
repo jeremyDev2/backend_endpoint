@@ -1,5 +1,5 @@
 import asyncio
-import celery_app
+from app.worker.celery_app import celery_app
 from sqlalchemy import update
 from app.session import session_factory
 from app.db import Product
