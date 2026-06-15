@@ -11,6 +11,6 @@ async def purchase_redis(request: PurchaseRequest) -> int:
     )
     if res >= 0:
         await asyncio.to_thread(
-            sync_stock_to_db.delay(request.product_id, request.purchased_count)
+            sync_stock_to_db.delay, request.product_id, request.purchased_count
         )
     return res
